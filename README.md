@@ -89,7 +89,7 @@ These are just estimates for my current configuration and can change if the Vapi
 
 ### Vapi Runtime Profile
 
-![Vapi runtime configuration](docs/images/vapi-runtime-profile.png)
+![Vapi runtime profile](docs/images/vapi-runtime-profile.png)
 
 *Current Vapi setup showing the selected STT, LLM, voice, latency and cost.*
 
@@ -526,7 +526,7 @@ Example result:
 <details>
 <summary>View pytest result</summary>
 
-![Pytest results](docs/images/pytest-results.png)
+![Pytest results](C:\30 Days of Python\ai-voice-appointment-agent\docs\images\pytest-results.png)
 
 *Automated test suite passing.*
 
