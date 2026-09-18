@@ -526,7 +526,7 @@ Example result:
 <details>
 <summary>View pytest result</summary>
 
-![Pytest results](C:\30 Days of Python\ai-voice-appointment-agent\docs\images\pytest-results.png)
+![Pytest results](\docs\images\pytest-results.png)
 
 *Automated test suite passing.*
 
