@@ -97,7 +97,7 @@ These are just estimates for my current configuration and can change if the Vapi
 
 ## Architecture
 
-![system architecture.png](system%20architecture.png)
+![System architecture](docs/images/system-architecture.png)
 
 Each part has a pretty specific job:
 
@@ -128,7 +128,7 @@ cancel_appointment
 
 The graph routes them like this:
 
-![LangGraph Workflow.png](LangGraph%20Workflow.png)
+![LangGraph workflow](docs/images/langgraph-workflow.png)
 ### Shared state
 
 The graph uses a small `AppointmentState` object:
