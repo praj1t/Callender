@@ -97,59 +97,7 @@ These are just estimates for my current configuration and can change if the Vapi
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    Caller["Caller"] --> Vapi["Vapi Voice Runtime"]
-
-    subgraph Voice["Real-Time Voice Layer"]
-        STT["Soniox STT RT v5"]
-        LLM["Gemini 3.1 Flash Lite<br/>Intent + Tool Selection"]
-        TTS["Elliot v2"]
-    end
-
-    Vapi --> STT
-    STT --> LLM
-    LLM --> Tools["Vapi Function Tool Call"]
-    Tools --> FastAPI["FastAPI<br/>POST /vapi/webhook"]
-
-    FastAPI --> Graph["LangGraph Workflow"]
-
-    subgraph Workflow["Scheduling Workflow"]
-        Validate["Validate Request"]
-        Availability["Check Availability"]
-        Find["Find Existing Appointment"]
-        Book["Book"]
-        Reschedule["Reschedule"]
-        Cancel["Cancel"]
-        Finalize["Finalize Response"]
-    end
-
-    Graph --> Validate
-    Validate --> Availability
-    Validate --> Find
-    Availability --> Book
-    Availability --> Reschedule
-    Find --> Availability
-    Find --> Cancel
-    Book --> Finalize
-    Reschedule --> Finalize
-    Cancel --> Finalize
-    Availability --> Finalize
-
-    Availability --> Service["Appointment Service"]
-    Find --> Service
-    Book --> Service
-    Reschedule --> Service
-    Cancel --> Service
-
-    Service --> Calendar["Google Calendar API"]
-    Calendar --> Service
-    Service --> Graph
-    Graph --> FastAPI
-    FastAPI --> Vapi
-    Vapi --> TTS
-    TTS --> Caller
-```
+![img_1.png](system architecture.png)
 
 Each part has a pretty specific job:
 
@@ -180,34 +128,7 @@ cancel_appointment
 
 The graph routes them like this:
 
-```mermaid
-flowchart TD
-    Start([START]) --> Validate["validate_request"]
-
-    Validate -->|invalid| Error["handle_error"]
-    Error --> Finalize["finalize_response"]
-
-    Validate -->|check_availability| Check["check_availability"]
-    Validate -->|book_appointment| Check
-    Validate -->|reschedule_appointment| Find["find_existing_appointment"]
-    Validate -->|cancel_appointment| Find
-
-    Check -->|availability request| Finalize
-    Check -->|unavailable| Finalize
-    Check -->|booking + free| Book["book_appointment"]
-    Check -->|reschedule + free| Reschedule["reschedule_appointment"]
-
-    Find -->|not found| Finalize
-    Find -->|reschedule| Check
-    Find -->|cancel| Cancel["cancel_appointment"]
-
-    Book --> Finalize
-    Reschedule --> Finalize
-    Cancel --> Finalize
-
-    Finalize --> End([END])
-```
-
+![img_2.png](LangGraph Workflow.png)
 ### Shared state
 
 The graph uses a small `AppointmentState` object:
